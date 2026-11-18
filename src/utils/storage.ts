@@ -34,7 +34,7 @@ export const createEmptyUserData = (): UserData => ({
   notifications: [
     {
       id: 'welcome',
-      text: 'Welcome to Folio! Open any volume to experience the two-page book spread.',
+      text: 'Welcome to UCbooksphere! Explore ComProg coursebooks and classics in the two-page book reader.',
       timestamp: Date.now(),
       read: false,
     },

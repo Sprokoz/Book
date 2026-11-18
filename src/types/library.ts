@@ -30,6 +30,8 @@ export interface Book {
   featured?: boolean;
   editionLabel: string;
   collection: string;
+  courseCode?: string;
+  courseTrack?: 'ComProg' | 'Mathematics' | 'Natural Sciences' | 'Humanities & Strategy';
   description: string;
   chapters: Chapter[];
 }
@@ -137,6 +139,7 @@ export interface Settings {
 
 export type RouteName =
   | 'home'
+  | 'educational'
   | 'browse'
   | 'categories'
   | 'trending'

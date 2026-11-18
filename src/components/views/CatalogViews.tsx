@@ -218,7 +218,7 @@ export const TrendingView: React.FC<TrendingViewProps> = ({
         Trending Volumes
       </h1>
       <p className="mt-1 mb-6 text-sm text-stone-500 dark:text-stone-400">
-        Most actively read classics across Folio
+        Most actively read volumes across UCbooksphere
       </p>
 
       <div className="divide-y divide-stone-200 overflow-hidden rounded-2xl border border-stone-200 bg-white dark:divide-stone-800 dark:border-stone-800 dark:bg-stone-900">

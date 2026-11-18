@@ -14,6 +14,7 @@ interface HomeViewProps {
   onToggleFavorite: (bookId: string) => void;
   onSelectCollection: (collection: string) => void;
   onBrowseAll: () => void;
+  onBrowseEducational: () => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -24,6 +25,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onToggleFavorite,
   onSelectCollection,
   onBrowseAll,
+  onBrowseEducational,
 }) => {
   const featuredBooks = BOOKS.filter((b) => b.featured);
   const [heroIdx, setHeroIdx] = useState(0);
@@ -83,6 +85,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   })();
 
   const trending = [...BOOKS].sort((a, b) => b.readers - a.readers);
+  const educationalBooks = BOOKS.filter((b) => b.genres.includes('Educational'));
   const newAdditions = [...BOOKS].slice(9).concat([...BOOKS].slice(0, 5));
   const editorsPicks = BOOKS.filter((b) => b.featured);
 
@@ -271,6 +274,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       )}
 
+      {/* School & ComProg Educational Shelf */}
+      <ShelfRow
+        title="Educational & ComProg Coursebooks"
+        subtitle="School textbooks for Computer Programming, Web Systems, Math, Science & General Ed"
+        books={educationalBooks}
+        reviews={reviews}
+        favorites={favorites}
+        onToggleFavorite={onToggleFavorite}
+        onOpenBook={onOpenBook}
+        actionLabel="View all courses →"
+        onAction={onBrowseEducational}
+      />
+
       {/* Curated Collections Strip */}
       <section className="my-10">
         <div className="mb-4 flex items-end justify-between">
@@ -279,7 +295,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               Curated Collections
             </h2>
             <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400">
-              Thematic reading rooms assembled by our editors
+              Thematic reading rooms assembled by UCbooksphere editors
             </p>
           </div>
           <button
@@ -287,7 +303,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             onClick={onBrowseAll}
             className="text-xs font-semibold text-amber-700 hover:underline dark:text-amber-300"
           >
-            Browse all 14 volumes
+            Browse all {BOOKS.length} volumes
           </button>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

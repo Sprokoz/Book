@@ -128,10 +128,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   return (
     <ModalShell onClose={onClose}>
       <div className="mb-4">
-        <span className="font-display text-2xl font-bold text-amber-700 dark:text-amber-300">
-          Folio
-        </span>
-        <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">
+        <div className="flex items-center gap-2.5">
+          <img
+            src={`${import.meta.env.BASE_URL}assets/aistudio/ucspherebook_97d0f2ac.png`}
+            alt="UCbooksphere"
+            className="h-9 w-9 rounded-lg bg-[#f5f3ec] object-contain p-0.5 ring-1 ring-black/10"
+          />
+          <span className="font-display text-2xl font-bold text-amber-700 dark:text-amber-300">
+            UCbooksphere
+          </span>
+        </div>
+        <p className="mt-1.5 text-xs text-stone-500 dark:text-stone-400">
           Accounts are stored locally in this browser with salted PBKDF2 hashing.
         </p>
       </div>

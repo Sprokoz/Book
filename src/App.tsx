@@ -44,6 +44,7 @@ import {
   ProfileView,
   SettingsView,
 } from './components/views/AccountViews';
+import { EducationalView } from './components/views/EducationalView';
 
 function parseHashRoute(hashStr: string): ParsedRoute {
   const clean = hashStr.replace(/^#/, '') || 'home';
@@ -53,6 +54,8 @@ function parseHashRoute(hashStr: string): ParsedRoute {
   const routeMap: Record<string, RouteName> = {
     home: 'home',
     browse: 'browse',
+    educational: 'educational',
+    edu: 'educational',
     cats: 'categories',
     categories: 'categories',
     trending: 'trending',
@@ -351,7 +354,7 @@ export default function App() {
       id,
       name: 'Clara Vance',
       username: 'demo_reader',
-      email: 'clara@folio.library',
+      email: 'clara@ucbooksphere.edu',
       salt,
       hash,
       avatar: { emoji: '🦉', color: '#d4a73a' },
@@ -761,6 +764,17 @@ export default function App() {
               setBrowseGenre('All');
               navigate('browse');
             }}
+            onBrowseEducational={() => navigate('educational')}
+          />
+        )}
+
+        {route.name === 'educational' && (
+          <EducationalView
+            reviews={db.reviews}
+            favorites={currentUser?.data.favorites || []}
+            onToggleFavorite={handleToggleFavorite}
+            onOpenBook={(id) => navigate(`book-${id}`)}
+            onStartReading={(id) => handleStartReading(id)}
           />
         )}
 
@@ -976,7 +990,7 @@ export default function App() {
             <div className="py-16 text-center">
               <h2 className="font-display text-2xl font-bold">Volume Not Found</h2>
               <p className="mt-2 text-sm text-stone-500">
-                That book could not be found in the Folio catalog.
+                That book could not be found in the UCbooksphere catalog.
               </p>
               <button
                 type="button"
@@ -995,8 +1009,11 @@ export default function App() {
 
       {/* Quiet Editorial Footer */}
       <footer className="mt-14 border-t border-stone-200 py-8 text-center text-xs text-stone-500 dark:border-stone-800/80 dark:text-stone-400">
-        <p>
-          Folio Reading Library · {BOOKS.length} Illustrated Editions · Local Browser Reading Room
+        <p className="font-medium text-stone-700 dark:text-stone-300">
+          UCbooksphere · {BOOKS.length} Illustrated Editions &amp; Academic Coursebooks
+        </p>
+        <p className="mt-1 text-[11px] text-stone-400 dark:text-stone-500">
+          Created by Philippe Blink Segovia, Kent Macabodbod, Kurt Remulta, Kian Tiro &amp; John Simbahon
         </p>
       </footer>
 

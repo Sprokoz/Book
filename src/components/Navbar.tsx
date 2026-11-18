@@ -27,6 +27,7 @@ interface NavbarProps {
 
 const NAV_LINKS: Array<{ route: RouteName; hash: string; label: string }> = [
   { route: 'home', hash: 'home', label: 'Home' },
+  { route: 'educational', hash: 'educational', label: 'Educational' },
   { route: 'browse', hash: 'browse', label: 'Browse' },
   { route: 'categories', hash: 'cats', label: 'Categories' },
   { route: 'trending', hash: 'trending', label: 'Trending' },
@@ -77,7 +78,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   const trimmed = searchQuery.trim().toLowerCase();
   const matches: Book[] = trimmed
     ? BOOKS.filter((b) =>
-        [b.title, b.author, b.genres.join(' '), b.description, b.collection]
+        [
+          b.title,
+          b.author,
+          b.genres.join(' '),
+          b.description,
+          b.collection,
+          b.courseCode || '',
+        ]
           .join(' ')
           .toLowerCase()
           .includes(trimmed)
@@ -89,10 +97,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     onNavigate(hash);
   };
 
+  const logoSrc = `${import.meta.env.BASE_URL}assets/aistudio/ucspherebook_97d0f2ac.png`;
+
   return (
     <header className="sticky top-0 z-30 border-b border-stone-200/80 bg-[#f7f4ee]/90 backdrop-blur-md dark:border-stone-800/80 dark:bg-[#111114]/90">
-      <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:gap-8">
-        {/* Zone 1: Brand Wordmark + Mobile Menu Trigger */}
+      <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:gap-6">
+        {/* Zone 1: Brand Logo + Wordmark */}
         <div className="flex items-center gap-3 shrink-0">
           <button
             type="button"
@@ -108,14 +118,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               e.preventDefault();
               handleLinkClick('home');
             }}
-            className="font-display text-2xl font-bold tracking-tight text-stone-900 whitespace-nowrap shrink-0 dark:text-amber-100"
+            className="flex items-center gap-2.5 whitespace-nowrap shrink-0"
           >
-            Folio
+            <img
+              src={logoSrc}
+              alt="UCbooksphere logo"
+              className="h-9 w-9 rounded-lg bg-[#f5f3ec] object-contain p-0.5 shadow-sm ring-1 ring-black/10"
+            />
+            <span className="font-display text-xl font-bold tracking-tight text-stone-900 dark:text-amber-100">
+              UCbooksphere
+            </span>
           </a>
         </div>
 
         {/* Zone 2: Clean Single-Line Nav Links */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-5">
           {NAV_LINKS.map((item) => {
             const isActive = activeRoute === item.route;
             return (
@@ -146,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Zone 3: Search + Actions */}
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-3">
-          <div ref={searchRef} className="relative w-full max-w-[260px] sm:max-w-[300px]">
+          <div ref={searchRef} className="relative w-full max-w-[240px] sm:max-w-[270px]">
             <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-stone-400" />
             <input
               type="search"
@@ -162,7 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onNavigate('search');
                 }
               }}
-              placeholder="Search titles, authors..."
+              placeholder="Search titles, ComProg..."
               aria-label="Search books"
               className="w-full rounded-lg border border-stone-300/90 bg-white/90 py-1.5 pr-3 pl-9 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-amber-600 focus:outline-none dark:border-stone-700/80 dark:bg-stone-900/90 dark:text-stone-100 dark:placeholder-stone-500 dark:focus:border-amber-400"
             />
@@ -190,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             {b.title}
                           </p>
                           <p className="truncate text-xs text-stone-500 dark:text-stone-400">
-                            {b.author}
+                            {b.courseCode ? `${b.courseCode} · ` : ''}{b.author}
                           </p>
                         </div>
                       </button>

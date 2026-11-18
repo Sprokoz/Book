@@ -869,10 +869,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
       {/* About & Legal */}
       <div className="rounded-2xl border border-stone-200 bg-white p-6 dark:border-stone-800 dark:bg-stone-900">
-        <h2 className="font-display mb-4 text-lg font-bold">About Folio</h2>
+        <h2 className="font-display mb-4 text-lg font-bold">
+          About UCbooksphere
+        </h2>
         <div className="flex flex-wrap gap-2">
           {[
-            'About',
+            'About Us',
             'Terms and Conditions',
             'Privacy Policy',
             'Contact Support',
@@ -934,16 +936,54 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
       {infoModal && (
         <ModalShell onClose={() => setInfoModal(null)} title={infoModal}>
-          <p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
-            {infoModal === 'About' &&
-              'Folio is an illustrated literary reading library featuring classic works presented in an authentic open-book reading room. Accounts, bookshelves, and annotations are stored locally in your browser.'}
-            {infoModal === 'Terms and Conditions' &&
-              'Folio is provided for personal reading and study. All included editions are curated literary works for offline-friendly browser reading.'}
-            {infoModal === 'Privacy Policy' &&
-              'Your accounts, reading progress, margin notes, and settings remain strictly on your local device inside browser storage and are never transmitted externally.'}
-            {infoModal === 'Contact Support' &&
-              'Leave a note below. In local browser mode, support messages are saved on this device.'}
-          </p>
+          {infoModal === 'About Us' ? (
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <img
+                  src={`${import.meta.env.BASE_URL}assets/aistudio/ucspherebook_97d0f2ac.png`}
+                  alt="UCbooksphere logo"
+                  className="h-12 w-12 rounded-xl bg-[#f5f3ec] object-contain p-1 ring-1 ring-black/10"
+                />
+                <div>
+                  <h4 className="font-display text-lg font-bold text-stone-900 dark:text-stone-100">
+                    UCbooksphere
+                  </h4>
+                  <p className="text-xs text-stone-500 dark:text-stone-400">
+                    School &amp; Academic Digital Reading Library
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+                UCbooksphere is an illustrated school reading platform built for
+                students and lifelong learners—combining ComProg and core
+                course textbooks with classic literature in an authentic
+                open-book reading room.
+              </p>
+
+              <div className="border-t border-stone-200 pt-3 dark:border-stone-800">
+                <p className="mb-2 text-xs font-semibold tracking-wider uppercase text-amber-700 dark:text-amber-300">
+                  Created By
+                </p>
+                <ul className="space-y-1.5 text-sm text-stone-800 dark:text-stone-200">
+                  <li>Philippe Blink Segovia</li>
+                  <li>Kent Macabodbod</li>
+                  <li>Kurt Remulta</li>
+                  <li>Kian Tiro</li>
+                  <li>John Simbahon</li>
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+              {infoModal === 'Terms and Conditions' &&
+                'UCbooksphere is provided for educational study and personal reading. All included coursebooks and literary editions are curated for browser-based academic use.'}
+              {infoModal === 'Privacy Policy' &&
+                'Your accounts, reading progress, margin notes, and settings remain strictly on your local device inside browser storage and are never transmitted externally.'}
+              {infoModal === 'Contact Support' &&
+                'Leave a note below. In local browser mode, support messages are saved on this device.'}
+            </p>
+          )}
           {infoModal === 'Contact Support' && (
             <form
               onSubmit={(e) => {

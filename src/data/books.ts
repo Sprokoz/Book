@@ -1,6 +1,11 @@
 import type { Book, ShelfStatus } from '../types/library';
 
 export const GENRES = [
+  'Educational',
+  'ComProg',
+  'Computer Science',
+  'Mathematics',
+  'Natural Sciences',
   'Fiction',
   'Romance',
   'Fantasy',
@@ -11,7 +16,6 @@ export const GENRES = [
   'Adventure',
   'Comedy',
   'Drama',
-  'Educational',
   'Classics',
   'Manga & Woodblock',
   'Comics & Fables',
@@ -25,6 +29,7 @@ export const SHELF_STATUSES: ShelfStatus[] = [
 ];
 
 export const COLLECTIONS = [
+  'Academic & ComProg',
   'Victorian Wit & Intrigue',
   'Midnight Gothic',
   'Voyages & Myth',
@@ -466,6 +471,8 @@ Reader, I married him. A quiet wedding it was, beneath green forest boughs where
     plateCaption: 'Plate I — Ink Mountains & Bamboo Scrolls',
     editionLabel: 'Bilingual Classical Monograph',
     collection: 'Voyages & Myth',
+    courseCode: 'HIST 102',
+    courseTrack: 'Humanities & Strategy',
     description:
       'The timeless ancient treatise on strategy, foresight, terrain, and winning decisive victories without needless conflict.',
     chapters: [
@@ -762,6 +769,308 @@ Notice how a single curved brushstroke conveys the weight of wind in cedar bough
 In these woodblock stories, image and prose answer one another like voice and echo—proving that a picture need never merely decorate a page, but carries half the tale itself.
 
 Turn the leaf gently, and let the lantern path guide your eye into the mist.`,
+      },
+    ],
+  },
+  {
+    id: 'comprog1',
+    title: 'Computer Programming I: Logic & Fundamentals',
+    author: 'UCbooksphere Computer Studies Faculty',
+    year: 2026,
+    genres: ['Educational', 'ComProg', 'Computer Science'],
+    rating: 4.9,
+    readers: 1640,
+    hue: 196,
+    spineColor: '#132a3e',
+    coverUrl: `${import.meta.env.BASE_URL}src/assets/images/cover_comprog_logic_1795022700097.jpg`,
+    plateCaption: 'Plate I — Program Flow & Algorithmic Logic',
+    featured: true,
+    editionLabel: 'ComProg 101 Course Textbook',
+    collection: 'Academic & ComProg',
+    courseCode: 'COMPROG 101',
+    courseTrack: 'ComProg',
+    description:
+      'Core foundations of structured computer programming: variables, data types, Boolean logic, conditional branching, iteration loops, functions, and disciplined debugging for first-year computing students.',
+    chapters: [
+      {
+        title: 'Unit I — Algorithmic Thinking & Variables',
+        subtitle: 'From Everyday Steps to Machine Precision',
+        text: `Every computer program begins long before a single character is typed into an editor. At its heart, programming is the craft of breaking an ambiguous real-world problem into an unambiguous sequence of steps called an algorithm.
+
+To manipulate information cleanly, programs store values inside named containers known as variables. Each variable holds a specific kind of data—whole numbers (integers), decimal numbers (floats), true-or-false flags (booleans), or sequences of characters (strings)—allowing the processor to allocate memory accurately and prevent subtle type errors.
+
+When writing pseudocode or tracing a flowchart by hand, strong programmers always track variable state line by line. Tracing a dry-run table reveals off-by-one slips and uninitialized values before the code ever runs.
+
+Mastery of ComProg I rests on clarity: choose descriptive variable names, test small assumptions early, and treat every compiler message as a helpful diagnostic clue rather than a setback.`,
+      },
+      {
+        title: 'Unit II — Control Flow, Decisions & Loops',
+        subtitle: 'Branching Logic & Repetition',
+        text: `Static programs that run straight from top to bottom can only solve rigid tasks. Real software responds dynamically to user input and changing state through control flow structures: conditionals and loops.
+
+Conditional statements—if, else if, and else—evaluate Boolean expressions that resolve strictly to true or false. Combining relational operators (<, >, ===) with logical connectors (AND, OR, NOT) lets a program verify login credentials, calculate grading brackets, or guard against division by zero.
+
+Whenever a task must repeat across dozens or millions of items, iteration loops replace repetitive code. Use a counted loop (for) when the number of passes is known beforehand, and a condition-controlled loop (while) when repetition depends on a runtime event such as reading until the end of a file.
+
+Always verify that every loop moves reliably toward its exit condition; a single forgotten increment turns an elegant loop into an infinite stall.`,
+      },
+      {
+        title: 'Unit III — Modular Functions & Debugging',
+        subtitle: 'Reusable Building Blocks',
+        text: `As programs grow beyond fifty lines, placing every instruction inside one monolithic block makes testing nearly impossible. Modular design solves this by packaging coherent tasks into independent functions that accept clear input parameters and return predictable outputs.
+
+Well-structured functions follow the single-responsibility habit: one function validates an email format, another computes a weighted grade, and a third formats the output table. Isolating responsibilities means fixing a bug in one calculation never breaks unrelated features elsewhere.
+
+When unexpected behavior appears, disciplined debugging beats random guesswork. Reproduce the issue with the smallest possible test case, inspect intermediate values at key checkpoints, and verify boundary inputs such as empty strings, zero, or negative numbers.
+
+Clean logic, readable formatting, and patient testing transform beginner scripts into dependable software systems.`,
+      },
+    ],
+  },
+  {
+    id: 'comprog2',
+    title: 'Data Structures & Algorithms (ComProg II)',
+    author: 'UCbooksphere Computer Studies Faculty',
+    year: 2026,
+    genres: ['Educational', 'ComProg', 'Computer Science'],
+    rating: 4.8,
+    readers: 1410,
+    hue: 232,
+    spineColor: '#191d42',
+    coverUrl: `${import.meta.env.BASE_URL}src/assets/images/cover_data_structures_1795022700410.jpg`,
+    plateCaption: 'Plate I — Balanced Binary Tree Topology',
+    featured: true,
+    editionLabel: 'ComProg 102 Course Textbook',
+    collection: 'Academic & ComProg',
+    courseCode: 'COMPROG 102',
+    courseTrack: 'ComProg',
+    description:
+      'An intermediate ComProg guide to organizing memory and speeding up computation: arrays, linked lists, stacks, queues, recursion, binary trees, hash tables, and Big-O time complexity.',
+    chapters: [
+      {
+        title: 'Unit I — Big-O Complexity & Linear Structures',
+        subtitle: 'Measuring Speed Before Scaling',
+        text: `Two programs can produce identical answers on ten records while behaving worlds apart on ten million records. Asymptotic analysis—expressed in Big-O notation—measures how runtime and memory grow relative to input size n.
+
+Contiguous arrays grant instant O(1) index lookup because every element sits at a predictable memory offset, though inserting in the middle requires shifting neighbors in O(n) time. Linked lists trade direct indexing for O(1) pointer-based insertion and deletion when node positions are already known.
+
+Stacks enforce Last-In, First-Out (LIFO) discipline, powering function call frames and undo histories. Queues enforce First-In, First-Out (FIFO) ordering, coordinating print jobs, breadth-first searches, and network request buffers.
+
+Selecting the right container early is often worth more than micro-optimizing syntax later.`,
+      },
+      {
+        title: 'Unit II — Recursion, Sorting & Divide-and-Conquer',
+        subtitle: 'Problems Inside Smaller Problems',
+        text: `Recursion solves complex structures by defining a clear base case—where the problem is trivial—and a recursive step that shrinks the problem closer to that base case on every call.
+
+Merge Sort and Quick Sort demonstrate the power of divide-and-conquer. Whereas simple nested-loop sorts require O(n^2) comparisons, dividing a dataset in half recursively and merging sorted runs achieves O(n log n) performance even across massive university catalogs.
+
+Binary search relies on the same halving principle: given a sorted list, comparing the midpoint eliminates half the remaining search space on every step, locating any record in a million entries within twenty comparisons.
+
+Always prove two things before running a recursive routine: that the base case is reachable, and that each step strictly reduces remaining work.`,
+      },
+      {
+        title: 'Unit III — Trees, Graphs & Hash Maps',
+        subtitle: 'Non-Linear Relationships',
+        text: `Hierarchical filesystems, syntax parsers, and autocomplete dictionaries rely on tree structures where each parent node branches cleanly to children without cycles. Binary Search Trees keep smaller keys left and larger keys right, enabling rapid ordered traversal.
+
+When fast key-value lookup matters most—such as checking student IDs or caching book metadata—hash tables map keys through a deterministic hash function into array buckets for near-constant O(1) average lookup.
+
+Graphs generalize trees to arbitrary networks of vertices and edges, modeling campus transit paths, dependency pipelines, and social connections via breadth-first and depth-first traversal.
+
+Understanding how data sits in memory turns abstract code into responsive, scalable engineering.`,
+      },
+    ],
+  },
+  {
+    id: 'webdev',
+    title: 'Web Systems & Interactive Design',
+    author: 'UCbooksphere IT Department',
+    year: 2026,
+    genres: ['Educational', 'ComProg', 'Computer Science'],
+    rating: 4.8,
+    readers: 1290,
+    hue: 185,
+    spineColor: '#122933',
+    coverUrl: `${import.meta.env.BASE_URL}src/assets/images/cover_web_systems_1795022701270.jpg`,
+    plateCaption: 'Plate I — Responsive Grid & Component Architecture',
+    editionLabel: 'IT / WebComProg Module',
+    collection: 'Academic & ComProg',
+    courseCode: 'IT 204',
+    courseTrack: 'ComProg',
+    description:
+      'Practical principles of modern web engineering for school projects: semantic HTML5 document structure, CSS Grid & Flexbox layout math, accessible contrast, and client-side state architecture.',
+    chapters: [
+      {
+        title: 'Unit I — Semantic Markup & Document Accessibility',
+        subtitle: 'Meaning Before Styling',
+        text: `A resilient web application starts with semantic HTML rather than generic nested containers. Using <header>, <nav>, <main>, <article>, and <button> communicates structure directly to screen readers, search crawlers, and keyboard users.
+
+Every interactive control must be reachable via keyboard Tab order and carry descriptive labels or alt text for imagery. Contrast ratios of at least 4.5:1 for body text ensure notes and navigation remain legible under bright classroom projectors as well as dark study rooms.
+
+Separating document meaning (HTML), visual presentation (CSS), and interactive state (TypeScript/JavaScript) keeps codebases maintainable when projects expand across teams.`,
+      },
+      {
+        title: 'Unit II — Responsive Grids & Visual Hierarchy',
+        subtitle: 'Flexbox, Grid & Spacing Rhythm',
+        text: `Modern CSS Flexbox and Grid eliminate fragile float hacks. Use Flexbox for single-axis alignment along toolbars and navigation strips, and CSS Grid for two-dimensional catalog shelves that adapt fluidly from mobile screens to 1440px desktop monitors.
+
+Consistent spacing scales and typographic restraint guide the reader's eye effortlessly: pair one expressive display typeface for titles with one clean readable body face, and avoid crowding every card with competing badges.
+
+When animations are used, restrict transitions to GPU-composited transform and opacity properties so scrolling and page turns stay silky at sixty frames per second.`,
+      },
+      {
+        title: 'Unit III — State Management & Static Deployment',
+        subtitle: 'From Local Prototype to Live Web',
+        text: `Interactive web apps organize UI cleanly as a function of state. Centralizing user bookshelves, filters, and form validation inside typed React components prevents out-of-sync DOM bugs.
+
+For school portals and personal study tools, browser localStorage paired with safe JSON parsing preserves reading progress and notes across refreshes without requiring complex server infrastructure.
+
+Before publishing to static hosts such as GitHub Pages, always build the production bundle with relative asset paths so stylesheets, scripts, and course cover illustrations resolve cleanly under any repository URL.`,
+      },
+    ],
+  },
+  {
+    id: 'calculus',
+    title: 'Applied Calculus & Analytical Thinking',
+    author: 'Prof. Elena Maris · Dept. of Mathematics',
+    year: 2025,
+    genres: ['Educational', 'Mathematics'],
+    rating: 4.7,
+    readers: 1080,
+    hue: 152,
+    spineColor: '#1b382d',
+    coverUrl: `${import.meta.env.BASE_URL}src/assets/images/cover_applied_calculus_1795022700821.jpg`,
+    plateCaption: 'Plate I — Tangent Geometry & Riemann Sums',
+    editionLabel: 'University Mathematics Series',
+    collection: 'Academic & ComProg',
+    courseCode: 'MATH 112',
+    courseTrack: 'Mathematics',
+    description:
+      'An intuitive, visual-first approach to differential and integral calculus covering limits, instantaneous rates of change, optimization, and area accumulation in science and computing.',
+    chapters: [
+      {
+        title: 'Chapter I — Limits & Continuity',
+        subtitle: 'Approaching the Boundary',
+        text: `Calculus begins with a remarkably simple question: what value does a function approach as its input gets arbitrarily close to a target point, even if the function behaves strangely right at that exact spot?
+
+Limits bridge discrete arithmetic and continuous motion. By examining left-hand and right-hand behavior simultaneously, mathematicians verify whether a curve flows smoothly or jumps abruptly across a discontinuity.
+
+Understanding continuity guarantees key properties such as the Intermediate Value Theorem—which ensures that any continuous path connecting a negative altitude to a positive altitude must cross zero somewhere along the way.`,
+      },
+      {
+        title: 'Chapter II — Derivatives & Optimization',
+        subtitle: 'Slopes in Motion',
+        text: `While average speed compares total distance divided by total time, the derivative captures instantaneous rate of change—the exact slope of the tangent line touching a curve at a single instant.
+
+In physics, engineering, and computer graphics, derivatives reveal velocity, acceleration, surface normals, and steepest descent directions. Setting the first derivative equal to zero identifies peaks and valleys, allowing students to solve real optimization problems from minimizing packaging material to tuning machine-learning loss functions.
+
+Practice the power, product, and chain rules until differentiating composite functions feels as natural as basic algebra.`,
+      },
+      {
+        title: 'Chapter III — Integrals & Accumulation',
+        subtitle: 'Summing Infinitesimal Slices',
+        text: `If differentiation breaks motion into instantaneous rates, integration rebuilds the whole by summing infinitely thin rectangles—known as Riemann sums—underneath a continuous curve.
+
+The Fundamental Theorem of Calculus unites both halves into one elegant bridge: evaluating the total area accumulated under a rate curve reduces directly to finding an antiderivative at the endpoints.
+
+From computing fluid volume and probability distributions to estimating total energy consumed over a shifting day, integral calculus turns changing rates into exact totals.`,
+      },
+    ],
+  },
+  {
+    id: 'biology',
+    title: 'Foundations of Cell Biology & Genetics',
+    author: 'Dr. Mateo Soriano · Natural Sciences',
+    year: 2025,
+    genres: ['Educational', 'Natural Sciences'],
+    rating: 4.8,
+    readers: 1015,
+    hue: 170,
+    spineColor: '#133d3a',
+    coverUrl: `${import.meta.env.BASE_URL}src/assets/images/cover_cell_biology_1795022701673.jpg`,
+    plateCaption: 'Plate I — Eukaryotic Organelle Cross-Section',
+    editionLabel: 'Laboratory & Lecture Compendium',
+    collection: 'Academic & ComProg',
+    courseCode: 'BIO 101',
+    courseTrack: 'Natural Sciences',
+    description:
+      'A clear illustrated guide to cellular architecture, organelle energy pathways, DNA transcription, mitotic division, and Mendelian inheritance for college and senior-high science courses.',
+    chapters: [
+      {
+        title: 'Chapter I — Architecture of the Living Cell',
+        subtitle: 'Membranes & Specialized Organelles',
+        text: `Every living organism—from single-celled pond algae to towering rainforest canopies—is built from microscopic compartments called cells. Surrounded by a selectively permeable phospholipid bilayer, each cell maintains a stable internal chemistry distinct from its environment.
+
+Inside eukaryotic cells, membrane-bound organelles divide labor cleanly. The nucleus safeguards chromosomal instructions, ribosomes assemble amino acid chains along the endoplasmic reticulum, and the Golgi apparatus sorts proteins for export.
+
+Mitochondria convert chemical nutrients into ATP energy currency, while plant chloroplasts capture sunlight to weave carbon dioxide and water into glucose.`,
+      },
+      {
+        title: 'Chapter II — DNA Replication & Gene Expression',
+        subtitle: 'From Double Helix to Protein',
+        text: `Deoxyribonucleic acid (DNA) encodes biological instructions using four complementary nucleotide bases—adenine pairing with thymine, and cytosine pairing with guanine—wound into an antiparallel double helix.
+
+Before a cell divides, specialized helicase and polymerase enzymes unzip the strands and synthesize exact complementary copies with proofreading accuracy.
+
+During gene expression, RNA polymerase transcribes a gene into messenger RNA (transcription), which ribosomes then read in three-letter codons to link specific amino acids into functional three-dimensional proteins (translation).`,
+      },
+      {
+        title: 'Chapter III — Inheritance & Cellular Division',
+        subtitle: 'Mitosis, Meiosis & Variation',
+        text: `Growth and tissue repair depend on mitosis, a tightly choreographed cycle that distributes duplicated chromosomes equally into two genetically identical daughter cells.
+
+Sexual reproduction relies instead on meiosis, halving chromosome sets and shuffling maternal and paternal alleles through crossing-over so every offspring inherits a unique genetic combination.
+
+By pairing classical Punnett-square probability with molecular genetics, students can trace how single nucleotide changes ripple upward into observable traits across generations.`,
+      },
+    ],
+  },
+  {
+    id: 'comm',
+    title: 'Purposive Communication & Academic Writing',
+    author: 'Prof. Hannah Lim · School of Humanities',
+    year: 2025,
+    genres: ['Educational', 'Classics'],
+    rating: 4.6,
+    readers: 930,
+    hue: 342,
+    spineColor: '#4b1f29',
+    coverUrl: `${import.meta.env.BASE_URL}src/assets/images/cover_academic_writing_1795022702785.jpg`,
+    plateCaption: 'Plate I — Study Desk & Archival Manuscripts',
+    editionLabel: 'General Education Core Reader',
+    collection: 'Academic & ComProg',
+    courseCode: 'GEC 105',
+    courseTrack: 'Humanities & Strategy',
+    description:
+      'Essential skills for university essays, technical documentation, oral presentations, critical source evaluation, and ethical citation across academic disciplines.',
+    chapters: [
+      {
+        title: 'Chapter I — Audience, Purpose & Clear Prose',
+        subtitle: 'Writing With Precision',
+        text: `Effective academic communication is never about disguising simple ideas behind ornate vocabulary; it is about making complex reasoning unmistakably clear to a specific audience.
+
+Before drafting a single paragraph, clarify three anchors: who is reading, what decision or understanding they need, and what evidence carries authority in their field. A laboratory report demands crisp method reproducibility, whereas a civic policy brief leads immediately with actionable findings.
+
+Replace vague filler phrases with active verbs and concrete nouns. Every sentence should advance the reader's grasp one deliberate step forward.`,
+      },
+      {
+        title: 'Chapter II — Building Evidence-Based Arguments',
+        subtitle: 'Thesis, Structure & Counterclaims',
+        text: `Strong academic essays anchor around a falsifiable, specific thesis statement rather than a broad topic summary. Each body paragraph opens with a focused topic claim, introduces verified evidence from primary or peer-reviewed sources, and explains explicitly how that evidence supports the larger argument.
+
+Rather than ignoring opposing viewpoints, persuasive scholars engage counterarguments fairly—acknowledging valid limits before demonstrating why their synthesis accounts more fully for the facts.
+
+Logical transitions between paragraphs act like architectural bridges, letting readers follow your chain of reasoning without stumbling.`,
+      },
+      {
+        title: 'Chapter III — Research Ethics & Oral Presentation',
+        subtitle: 'Citation & Public Delivery',
+        text: `Intellectual honesty underpins every school library and research community. Always distinguish direct quotations, careful paraphrases, and original synthesis, giving exact credit through consistent citation styles such as APA, IEEE, or MLA.
+
+When translating written research into a classroom presentation, resist crowding slides with paragraphs of text. Use clean visual anchors—one key chart, diagram, or concise takeaway per slide—while speaking naturally to your listeners.
+
+Clear writing and thoughtful listening strengthen collaboration across computing teams, science labs, and civic life alike.`,
       },
     ],
   },

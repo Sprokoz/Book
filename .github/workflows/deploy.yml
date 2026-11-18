@@ -1,4 +1,4 @@
-name: Deploy Folio to GitHub Pages
+name: Deploy UCbooksphere to GitHub Pages
 
 on:
   push:
