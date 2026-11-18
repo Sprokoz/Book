@@ -725,9 +725,15 @@ export default function App() {
     <div className="min-h-screen bg-[#f7f4ee] text-stone-900 transition-colors dark:bg-[#0e0e11] dark:text-stone-100">
       <Navbar
         activeRoute={route.name}
+        selectedGenre={browseGenre}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onNavigate={navigate}
+        onBrowseGenre={(genre) => {
+          setBrowseGenre(genre);
+          setBrowseCollection('All');
+          navigate('browse');
+        }}
         user={currentUser}
         notificationsEnabled={settings.notificationsEnabled}
         onOpenAuth={(tab = 'in') => setAuthModal({ open: true, tab })}
@@ -764,7 +770,11 @@ export default function App() {
               setBrowseGenre('All');
               navigate('browse');
             }}
-            onBrowseEducational={() => navigate('educational')}
+            onBrowseEducational={() => {
+              setBrowseCollection('All');
+              setBrowseGenre('Educational');
+              navigate('browse');
+            }}
           />
         )}
 

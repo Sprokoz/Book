@@ -4,6 +4,8 @@ import {
   Heart,
   Highlighter,
   Lock,
+  Mail,
+  Phone,
   Search,
   Trash2,
 } from 'lucide-react';
@@ -877,7 +879,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             'About Us',
             'Terms and Conditions',
             'Privacy Policy',
-            'Contact Support',
+            'Contact Us',
           ].map((item) => (
             <button
               key={item}
@@ -974,57 +976,96 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 </ul>
               </div>
             </div>
+          ) : infoModal === 'Contact Us' ? (
+            <div className="space-y-4">
+              <p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+                Have questions, textbook requests, or feedback for UCbooksphere?
+                Reach out to our team directly:
+              </p>
+
+              <div className="space-y-2.5 rounded-xl border border-stone-200 bg-stone-50 p-4 dark:border-stone-800 dark:bg-stone-950">
+                <a
+                  href="mailto:ucbooksphere@edu.ph"
+                  className="flex items-center gap-3 text-sm font-medium text-stone-800 transition-colors hover:text-amber-700 dark:text-stone-200 dark:hover:text-amber-300"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300">
+                    <Mail className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-stone-400">
+                      Email
+                    </p>
+                    <p>ucbooksphere@edu.ph</p>
+                  </div>
+                </a>
+
+                <a
+                  href="tel:+639323432342"
+                  className="flex items-center gap-3 text-sm font-medium text-stone-800 transition-colors hover:text-amber-700 dark:text-stone-200 dark:hover:text-amber-300"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-stone-400">
+                      Mobile Number
+                    </p>
+                    <p>(+63) 932 343 2342</p>
+                  </div>
+                </a>
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  try {
+                    const existing = JSON.parse(
+                      localStorage.getItem('folio_support_msgs') || '[]'
+                    );
+                    existing.push({ text: supportMsg, timestamp: Date.now() });
+                    localStorage.setItem(
+                      'folio_support_msgs',
+                      JSON.stringify(existing)
+                    );
+                  } catch {
+                    // Ignore
+                  }
+                  setSupportMsg('');
+                  setInfoModal(null);
+                  onToast('Message saved on this device');
+                }}
+                className="space-y-3 border-t border-stone-200 pt-3 dark:border-stone-800"
+              >
+                <p className="text-xs text-stone-500 dark:text-stone-400">
+                  Or leave a quick note below (saved locally on this device):
+                </p>
+                <textarea
+                  rows={3}
+                  required
+                  value={supportMsg}
+                  onChange={(e) => setSupportMsg(e.target.value)}
+                  placeholder="How can we help?"
+                  className="w-full rounded-lg border border-stone-300 bg-stone-50 p-3 text-sm dark:border-stone-700 dark:bg-stone-950"
+                />
+                <button
+                  type="submit"
+                  className="w-full rounded-lg py-2 text-sm font-semibold"
+                  style={{
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--accent-fg)',
+                  }}
+                >
+                  Send Note
+                </button>
+              </form>
+            </div>
           ) : (
             <p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
               {infoModal === 'Terms and Conditions' &&
                 'UCbooksphere is provided for educational study and personal reading. All included coursebooks and literary editions are curated for browser-based academic use.'}
               {infoModal === 'Privacy Policy' &&
                 'Your accounts, reading progress, margin notes, and settings remain strictly on your local device inside browser storage and are never transmitted externally.'}
-              {infoModal === 'Contact Support' &&
-                'Leave a note below. In local browser mode, support messages are saved on this device.'}
             </p>
-          )}
-          {infoModal === 'Contact Support' && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                try {
-                  const existing = JSON.parse(
-                    localStorage.getItem('folio_support_msgs') || '[]'
-                  );
-                  existing.push({ text: supportMsg, timestamp: Date.now() });
-                  localStorage.setItem(
-                    'folio_support_msgs',
-                    JSON.stringify(existing)
-                  );
-                } catch {
-                  // Ignore
-                }
-                setSupportMsg('');
-                setInfoModal(null);
-                onToast('Message saved on this device');
-              }}
-              className="mt-4 space-y-3"
-            >
-              <textarea
-                rows={4}
-                required
-                value={supportMsg}
-                onChange={(e) => setSupportMsg(e.target.value)}
-                placeholder="How can we help?"
-                className="w-full rounded-lg border border-stone-300 bg-stone-50 p-3 text-sm dark:border-stone-700 dark:bg-stone-950"
-              />
-              <button
-                type="submit"
-                className="w-full rounded-lg py-2 text-sm font-semibold"
-                style={{
-                  backgroundColor: 'var(--accent)',
-                  color: 'var(--accent-fg)',
-                }}
-              >
-                Send Note
-              </button>
-            </form>
           )}
         </ModalShell>
       )}

@@ -1,9 +1,17 @@
-import React from 'react';
-import { BookOpen, Search, Star } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { BookOpen, Check, ChevronDown, Filter, Search, Star } from 'lucide-react';
 import type { Book, LibraryDB } from '../../types/library';
 import { BOOKS, COLLECTIONS, GENRES } from '../../data/books';
 import { formatYear, getBookRating } from '../../utils/storage';
 import { BookCard } from '../BookCard';
+
+const ACADEMIC_GENRES = [
+  'Educational',
+  'ComProg',
+  'Computer Science',
+  'Mathematics',
+  'Natural Sciences',
+];
 
 interface BrowseViewProps {
   selectedGenre: string;
@@ -30,6 +38,25 @@ export const BrowseView: React.FC<BrowseViewProps> = ({
   onToggleFavorite,
   onOpenBook,
 }) => {
+  const [genreMenuOpen, setGenreMenuOpen] = useState(false);
+  const genreMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutside = (e: MouseEvent) => {
+      if (
+        genreMenuRef.current &&
+        !genreMenuRef.current.contains(e.target as Node)
+      ) {
+        setGenreMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
+
+  const academicList = GENRES.filter((g) => ACADEMIC_GENRES.includes(g));
+  const literaryList = GENRES.filter((g) => !ACADEMIC_GENRES.includes(g));
+
   const filtered = BOOKS.filter(
     (b) =>
       (selectedGenre === 'All' || b.genres.includes(selectedGenre)) &&
@@ -44,6 +71,41 @@ export const BrowseView: React.FC<BrowseViewProps> = ({
     return a.title.localeCompare(b.title);
   });
 
+  const renderGenreOption = (g: string) => {
+    const count =
+      g === 'All'
+        ? BOOKS.length
+        : BOOKS.filter((b) => b.genres.includes(g)).length;
+    const isSelected = selectedGenre === g;
+    return (
+      <button
+        key={g}
+        type="button"
+        onClick={() => {
+          onChangeGenre(g);
+          setGenreMenuOpen(false);
+        }}
+        className={`flex w-full items-center justify-between rounded-lg px-3 py-1.5 text-left text-xs font-medium transition-colors ${
+          isSelected
+            ? 'bg-amber-500/15 text-amber-800 dark:text-amber-200'
+            : 'text-stone-700 hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800'
+        }`}
+      >
+        <span className="flex items-center gap-2 truncate">
+          <Check
+            className={`h-3.5 w-3.5 shrink-0 ${
+              isSelected ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+          <span className="truncate">{g === 'All' ? 'All Categories' : g}</span>
+        </span>
+        <span className="font-tab ml-2 shrink-0 text-[11px] text-stone-400">
+          {count}
+        </span>
+      </button>
+    );
+  };
+
   return (
     <section>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
@@ -52,11 +114,61 @@ export const BrowseView: React.FC<BrowseViewProps> = ({
             Browse Library
           </h1>
           <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
-            Explore all {BOOKS.length} illustrated hardcover volumes
+            Explore all {BOOKS.length} illustrated classics &amp; educational coursebooks
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
+          {/* Hover-Triggered Genre & Educational Dropdown */}
+          <div
+            ref={genreMenuRef}
+            onMouseEnter={() => setGenreMenuOpen(true)}
+            onMouseLeave={() => setGenreMenuOpen(false)}
+            className="relative"
+          >
+            <button
+              type="button"
+              onClick={() => setGenreMenuOpen((v) => !v)}
+              aria-expanded={genreMenuOpen}
+              aria-haspopup="menu"
+              className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3.5 py-2 text-sm font-medium text-stone-800 transition-colors hover:border-amber-600/60 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:border-amber-400/50"
+            >
+              <Filter className="h-3.5 w-3.5 text-amber-700 dark:text-amber-300" />
+              <span>
+                {selectedGenre === 'All' ? 'All Categories' : selectedGenre}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 text-stone-400 transition-transform ${
+                  genreMenuOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {genreMenuOpen && (
+              <div className="absolute left-0 top-full z-30 w-64 pt-1.5 sm:right-0 sm:left-auto">
+                <div className="max-h-[70vh] overflow-y-auto rounded-xl border border-stone-200 bg-white p-2 shadow-2xl dark:border-stone-700 dark:bg-stone-900">
+                  {renderGenreOption('All')}
+
+                  <div className="my-1.5 border-t border-stone-200 dark:border-stone-800" />
+                  <p className="px-3 py-1 text-[10px] font-semibold tracking-wider uppercase text-amber-700 dark:text-amber-300">
+                    Educational &amp; ComProg
+                  </p>
+                  <div className="space-y-0.5">
+                    {academicList.map(renderGenreOption)}
+                  </div>
+
+                  <div className="my-1.5 border-t border-stone-200 dark:border-stone-800" />
+                  <p className="px-3 py-1 text-[10px] font-semibold tracking-wider uppercase text-stone-400">
+                    Literature &amp; Genres
+                  </p>
+                  <div className="space-y-0.5">
+                    {literaryList.map(renderGenreOption)}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <select
             aria-label="Filter by collection"
             value={selectedCollection}
@@ -87,32 +199,25 @@ export const BrowseView: React.FC<BrowseViewProps> = ({
         </div>
       </div>
 
-      {/* Interactive Genre Filter Tabs */}
-      <div className="mb-6 flex flex-wrap gap-1.5">
-        {['All', ...GENRES].map((g) => (
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <p className="font-tab text-xs text-stone-500 dark:text-stone-400">
+          Showing {sorted.length} {sorted.length === 1 ? 'volume' : 'volumes'}
+          {selectedGenre !== 'All' ? ` in ${selectedGenre}` : ''}
+          {selectedCollection !== 'All' ? ` · ${selectedCollection}` : ''}
+        </p>
+        {(selectedGenre !== 'All' || selectedCollection !== 'All') && (
           <button
-            key={g}
             type="button"
-            onClick={() => onChangeGenre(g)}
-            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
-              selectedGenre === g
-                ? 'shadow-sm'
-                : 'border border-stone-200 bg-white text-stone-600 hover:border-stone-400 hover:text-stone-900 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-400 dark:hover:text-stone-100'
-            }`}
-            style={
-              selectedGenre === g
-                ? { backgroundColor: 'var(--accent)', color: 'var(--accent-fg)' }
-                : undefined
-            }
+            onClick={() => {
+              onChangeGenre('All');
+              onChangeCollection('All');
+            }}
+            className="text-xs font-semibold text-amber-700 hover:underline dark:text-amber-300"
           >
-            {g}
+            Clear filters
           </button>
-        ))}
+        )}
       </div>
-
-      <p className="font-tab mb-4 text-xs text-stone-500 dark:text-stone-400">
-        Showing {sorted.length} {sorted.length === 1 ? 'volume' : 'volumes'}
-      </p>
 
       {sorted.length > 0 ? (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

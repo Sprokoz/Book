@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Bell,
   BookMarked,
+  Check,
+  ChevronDown,
   Heart,
   LogOut,
   Menu,
@@ -11,13 +13,23 @@ import {
   X,
 } from 'lucide-react';
 import type { Book, RouteName, UserAccount } from '../types/library';
-import { BOOKS } from '../data/books';
+import { BOOKS, GENRES } from '../data/books';
+
+const ACADEMIC_GENRES = [
+  'Educational',
+  'ComProg',
+  'Computer Science',
+  'Mathematics',
+  'Natural Sciences',
+];
 
 interface NavbarProps {
   activeRoute: RouteName;
+  selectedGenre: string;
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onNavigate: (hash: string) => void;
+  onBrowseGenre: (genre: string) => void;
   user: UserAccount | null;
   notificationsEnabled: boolean;
   onOpenAuth: (tab?: 'in' | 'up') => void;
@@ -27,7 +39,6 @@ interface NavbarProps {
 
 const NAV_LINKS: Array<{ route: RouteName; hash: string; label: string }> = [
   { route: 'home', hash: 'home', label: 'Home' },
-  { route: 'educational', hash: 'educational', label: 'Educational' },
   { route: 'browse', hash: 'browse', label: 'Browse' },
   { route: 'categories', hash: 'cats', label: 'Categories' },
   { route: 'trending', hash: 'trending', label: 'Trending' },
@@ -36,9 +47,11 @@ const NAV_LINKS: Array<{ route: RouteName; hash: string; label: string }> = [
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeRoute,
+  selectedGenre,
   searchQuery,
   onSearchChange,
   onNavigate,
+  onBrowseGenre,
   user,
   notificationsEnabled,
   onOpenAuth,
@@ -46,6 +59,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onMarkAllRead,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileBrowseOpen, setMobileBrowseOpen] = useState(false);
+  const [browseMenuOpen, setBrowseMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -53,6 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const searchRef = useRef<HTMLDivElement>(null);
   const bellRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const browseRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -66,10 +82,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       if (userMenuRef.current && !userMenuRef.current.contains(target)) {
         setUserMenuOpen(false);
       }
+      if (browseRef.current && !browseRef.current.contains(target)) {
+        setBrowseMenuOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const academicGenres = GENRES.filter((g) => ACADEMIC_GENRES.includes(g));
+  const literaryGenres = GENRES.filter((g) => !ACADEMIC_GENRES.includes(g));
 
   const unreadCount = user
     ? user.data.notifications.filter((n) => !n.read).length
@@ -135,6 +157,150 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="hidden lg:flex items-center gap-5">
           {NAV_LINKS.map((item) => {
             const isActive = activeRoute === item.route;
+            if (item.route === 'browse') {
+              return (
+                <div
+                  key={item.route}
+                  ref={browseRef}
+                  onMouseEnter={() => setBrowseMenuOpen(true)}
+                  onMouseLeave={() => setBrowseMenuOpen(false)}
+                  className="relative"
+                >
+                  <a
+                    href={`#${item.hash}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setBrowseMenuOpen(false);
+                      onBrowseGenre('All');
+                    }}
+                    className={`relative inline-flex items-center gap-1 py-1.5 text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
+                      isActive
+                        ? 'text-stone-950 dark:text-amber-200'
+                        : 'text-stone-600 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100'
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 transition-transform duration-150 ${
+                        browseMenuOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                    {isActive && (
+                      <span
+                        className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full"
+                        style={{ backgroundColor: 'var(--accent)' }}
+                      />
+                    )}
+                  </a>
+
+                  {browseMenuOpen && (
+                    <div className="absolute left-0 top-full z-40 w-[420px] pt-2.5">
+                      <div className="rounded-2xl border border-stone-200 bg-white p-3 shadow-2xl dark:border-stone-700 dark:bg-stone-900">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBrowseMenuOpen(false);
+                            onBrowseGenre('All');
+                          }}
+                          className={`mb-2 flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs font-semibold transition-colors ${
+                            activeRoute === 'browse' && selectedGenre === 'All'
+                              ? 'bg-amber-500/15 text-amber-800 dark:text-amber-200'
+                              : 'bg-stone-50 text-stone-800 hover:bg-stone-100 dark:bg-stone-800/60 dark:text-stone-200 dark:hover:bg-stone-800'
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <Check
+                              className={`h-3.5 w-3.5 ${
+                                activeRoute === 'browse' && selectedGenre === 'All'
+                                  ? 'opacity-100'
+                                  : 'opacity-0'
+                              }`}
+                            />
+                            All Books &amp; Coursebooks
+                          </span>
+                          <span className="font-tab text-[11px] text-stone-400">
+                            {BOOKS.length}
+                          </span>
+                        </button>
+
+                        <div className="grid grid-cols-2 gap-3 border-t border-stone-200 pt-2.5 dark:border-stone-800">
+                          <div>
+                            <p className="px-2.5 pb-1 text-[10px] font-semibold tracking-wider uppercase text-amber-700 dark:text-amber-300">
+                              Educational &amp; ComProg
+                            </p>
+                            <div className="space-y-0.5">
+                              {academicGenres.map((g) => {
+                                const count = BOOKS.filter((b) =>
+                                  b.genres.includes(g)
+                                ).length;
+                                const isSel =
+                                  activeRoute === 'browse' && selectedGenre === g;
+                                return (
+                                  <button
+                                    key={g}
+                                    type="button"
+                                    onClick={() => {
+                                      setBrowseMenuOpen(false);
+                                      onBrowseGenre(g);
+                                    }}
+                                    className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors ${
+                                      isSel
+                                        ? 'bg-amber-500/15 text-amber-800 dark:text-amber-200'
+                                        : 'text-stone-700 hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800'
+                                    }`}
+                                  >
+                                    <span className="truncate">{g}</span>
+                                    <span className="font-tab ml-2 text-[11px] text-stone-400">
+                                      {count}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="px-2.5 pb-1 text-[10px] font-semibold tracking-wider uppercase text-stone-400">
+                              Literature &amp; Genres
+                            </p>
+                            <div className="max-h-52 space-y-0.5 overflow-y-auto pr-0.5">
+                              {literaryGenres.map((g) => {
+                                const count = BOOKS.filter((b) =>
+                                  b.genres.includes(g)
+                                ).length;
+                                const isSel =
+                                  activeRoute === 'browse' && selectedGenre === g;
+                                return (
+                                  <button
+                                    key={g}
+                                    type="button"
+                                    onClick={() => {
+                                      setBrowseMenuOpen(false);
+                                      onBrowseGenre(g);
+                                    }}
+                                    className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors ${
+                                      isSel
+                                        ? 'bg-amber-500/15 text-amber-800 dark:text-amber-200'
+                                        : 'text-stone-700 hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800'
+                                    }`}
+                                  >
+                                    <span className="truncate">{g}</span>
+                                    <span className="font-tab ml-2 text-[11px] text-stone-400">
+                                      {count}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
               <a
                 key={item.route}
@@ -442,20 +608,62 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileOpen && (
         <div className="border-t border-stone-200 bg-[#f7f4ee] px-4 py-3 lg:hidden dark:border-stone-800 dark:bg-[#111114]">
           <div className="flex flex-col gap-1">
-            {NAV_LINKS.map((item) => (
-              <button
-                key={item.route}
-                type="button"
-                onClick={() => handleLinkClick(item.hash)}
-                className={`rounded-lg px-3 py-2.5 text-left text-sm font-medium ${
-                  activeRoute === item.route
-                    ? 'bg-stone-200/80 text-stone-950 dark:bg-stone-800 dark:text-amber-200'
-                    : 'text-stone-700 hover:bg-stone-200/40 dark:text-stone-300 dark:hover:bg-stone-800/50'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+            {NAV_LINKS.map((item) =>
+              item.route === 'browse' ? (
+                <div key={item.route}>
+                  <button
+                    type="button"
+                    onClick={() => setMobileBrowseOpen((v) => !v)}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm font-medium ${
+                      activeRoute === item.route
+                        ? 'bg-stone-200/80 text-stone-950 dark:bg-stone-800 dark:text-amber-200'
+                        : 'text-stone-700 hover:bg-stone-200/40 dark:text-stone-300 dark:hover:bg-stone-800/50'
+                    }`}
+                  >
+                    <span>Browse</span>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform ${
+                        mobileBrowseOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  {mobileBrowseOpen && (
+                    <div className="mt-1 ml-3 flex flex-wrap gap-1.5 border-l border-stone-300 pl-3 pb-2 dark:border-stone-700">
+                      {['All', ...academicGenres, ...literaryGenres].map((g) => (
+                        <button
+                          key={g}
+                          type="button"
+                          onClick={() => {
+                            setMobileOpen(false);
+                            onBrowseGenre(g);
+                          }}
+                          className={`rounded-md px-2.5 py-1 text-xs font-medium ${
+                            activeRoute === 'browse' && selectedGenre === g
+                              ? 'bg-amber-600 text-white'
+                              : 'bg-white text-stone-700 dark:bg-stone-800 dark:text-stone-300'
+                          }`}
+                        >
+                          {g}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  key={item.route}
+                  type="button"
+                  onClick={() => handleLinkClick(item.hash)}
+                  className={`rounded-lg px-3 py-2.5 text-left text-sm font-medium ${
+                    activeRoute === item.route
+                      ? 'bg-stone-200/80 text-stone-950 dark:bg-stone-800 dark:text-amber-200'
+                      : 'text-stone-700 hover:bg-stone-200/40 dark:text-stone-300 dark:hover:bg-stone-800/50'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              )
+            )}
             <div className="my-1 border-t border-stone-200 dark:border-stone-800" />
             <button
               type="button"
