@@ -1,0 +1,6 @@
+{
+  "name": "Folio — Online Reading Library",
+  "description": "An archival digital reading library with illustrated hardcover editions, an authentic open-book page-turning reader, personal bookshelves, and reading progress tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
