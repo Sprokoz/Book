@@ -345,7 +345,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onNavigate('search');
                 }
               }}
-              placeholder="Search titles, ComProg..."
+              placeholder="Search Titles"
               aria-label="Search books"
               className="w-full rounded-lg border border-stone-300/90 bg-white/90 py-1.5 pr-3 pl-9 text-sm text-stone-900 placeholder-stone-400 transition-colors focus:border-amber-600 focus:outline-none dark:border-stone-700/80 dark:bg-stone-900/90 dark:text-stone-100 dark:placeholder-stone-500 dark:focus:border-amber-400"
             />

@@ -424,7 +424,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
             type="text"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="Search titles, authors, genres, or collections..."
+            placeholder="Search Titles"
             className="w-full rounded-xl border border-stone-300 bg-white py-2.5 pr-4 pl-10 text-sm dark:border-stone-700 dark:bg-stone-900"
           />
         </div>
